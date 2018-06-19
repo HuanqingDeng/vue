@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- vue 本质 mvvm
+    data-binding
+    template compile -->
+    <!-- 支持对{{}}的解析，叫做模板的编译template compile
+    {{key}} key在data里面{name:'dhq'}进行 回填
+    步骤：1，打坑 2，填值-->
+    <div id="app">
+        <h3>姓名</h3>
+        <p>我的名字是{{name}}</p>
+        <h3>年龄</h3>
+        <p>{{age}}</p>
+        <div class="msg">
+            <p>
+                {{msg}}
+            </p>
+        </div>
+    </div>
+</body>
+<script>
+    class Vue{
+        constructor(opt){
+            this.opt=opt;
+            this.root=document.querySelector(opt.el);
+            this.compile(this.root);
+            // console.log(this.root); 
+        }
+        compile(node){
+            //{{.*}}
+            // 遍历节点，找到文本节点{{}}
+            // console.log(node.childNodes);  
+            [].forEach.call(node.childNodes,child=>{
+                // 正则检索{{}}
+                if(!child.firstElementChild &&/\{\{(.*)\}\}/.test(child.innerHTML)){
+                    // child.innerHTML=this.opt.data.name;
+                    // console.log(RegExp.$1);
+                    let key =RegExp.$1.trim();
+                    // child.innerHTML=this.opt.data[key];
+                    child.innerHTML= child.innerHTML.replace(/\{\{(.*)\}\}/,this.opt.data[key]);
+                }else if(child.firstElementChild){
+                    this.compile(child);//递归循环
+                }
+            })
+        }
+    }
+    document.addEventListener('DOMContentLoaded',function(){
+        // 快一点，
+        let options={
+            el:'#app',
+            data:{
+                name:'检索中。。。',
+                age:30,
+                msg:'vue 高手，月薪5万'
+            }
+        }
+        new Vue(options)
+    });
+    
+</script>
+</html>
