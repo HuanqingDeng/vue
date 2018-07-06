@@ -13,5 +13,8 @@ export default {
             cb(false)
          }
       },500)
+    },
+    loginOut(){
+      localStorage.removeItem('token')
     }
 }

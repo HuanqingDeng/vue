@@ -3,13 +3,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import store from './store'
+import {currency} from './currency'
 // vue是一个MVVM框架
 // 生态，VueRouter Vuex ElementUI Axios
 Vue.config.productionTip = false
+Vue.filter('currency',currency)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'
